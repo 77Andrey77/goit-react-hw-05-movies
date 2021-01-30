@@ -1,9 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { NavLink, Route, useParams, useRouteMatch } from "react-router-dom";
-import Cast from "../components/Cast/Cast";
-import Reviews from "../components/Reviews/Reviews";
+// import Cast from "../components/Cast/Cast";
+// import Reviews from "../components/Reviews/Reviews";
 import * as moviesApi from "../services/moviesApi";
-// import MovieList from "../components/MovieList/MovieList";
+
+import imagePlaseholder from "../images/imagePlaceholder.png";
+import s from "./MovieDetails.module.css";
+
+const Cast = lazy(() =>
+  import("../components/Cast/Cast" /*webpackChunkName: "Cast" */)
+);
+const Reviews = lazy(() =>
+  import("../components/Reviews/Reviews" /*webpackChunkName: "Reviews" */)
+);
 
 export default function MovieDetails() {
   const { movieId } = useParams();
@@ -14,24 +23,32 @@ export default function MovieDetails() {
     moviesApi.fetchMoviesDetails(movieId).then((movie) => setMovie(movie));
   }, [movieId]);
 
-  //   const { url } = useRouteMatch();
-
   return (
     <>
       {movie && (
         <>
-          <h1>{movie.title}</h1>
-          <img
-            src={
-              movie.poster_path
-                ? `https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`
-                : "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Noimage.svg/555px-Noimage.svg.png"
-            }
-            alt={movie.title || movie.name}
-          ></img>
-          <p>Overview</p>
-          <p>{movie.overview}</p>
-          <hr />
+          <h1>
+            {movie.title}({movie.release_date})
+          </h1>
+          <div className={s.description}>
+            <img
+              src={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                  : imagePlaseholder
+              }
+              alt={movie.title || movie.name}
+            ></img>
+            <div className={s.desc}>
+              <p>Overview:</p>
+              <p>{movie.overview}</p>
+              <p>Genres :</p>
+              <span>{movie.genres.map((genre) => genre.name).join("/")}</span>
+              <p>
+                Use score: <span>{movie.vote_average}</span>
+              </p>
+            </div>
+          </div>
 
           <h2>Additional information</h2>
           <ul>
@@ -42,13 +59,17 @@ export default function MovieDetails() {
               <NavLink to={`${url}/reviews`}>Reviews</NavLink>
             </li>
           </ul>
-          <Route path={`${path}/cast`}>
-            <Cast />
-          </Route>
 
-          <Route path={`${path}/reviews`}>
-            <Reviews />
-          </Route>
+          <hr />
+          <Suspense>
+            <Route path={`${path}:movieId/cast`}>
+              {movie && <Cast movieId={movieId} />}
+            </Route>
+
+            <Route path={`${path}/reviews`}>
+              <Reviews movieId={movieId} />
+            </Route>
+          </Suspense>
         </>
       )}
     </>

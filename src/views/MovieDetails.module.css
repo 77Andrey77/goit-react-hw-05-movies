@@ -1,0 +1,13 @@
+.description {
+  display: flex;
+  background-color: rgb(236, 162, 149);
+  padding: 20px;
+}
+
+.desc {
+  padding: 50px;
+}
+h1 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+}

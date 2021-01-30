@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-// import "../Searchbar/Searchbar.css";
+import s from "../SearchMovies/SearchMovies.module.css";
 
 export default function SearchMovies({ onSubmit }) {
   const [searchName, setSearchName] = useState("");
@@ -21,10 +21,10 @@ export default function SearchMovies({ onSubmit }) {
   };
 
   return (
-    <header className="SearchMovies">
-      <form onSubmit={handleSubmit} className="SearchForm">
+    <header className={s.SearchMovies}>
+      <form onSubmit={handleSubmit} className={s.SearchForm}>
         <input
-          className="SearchForm-input"
+          className={s.SearchFormInput}
           name="searchName"
           value={searchName}
           onChange={handleNameChange}
@@ -33,9 +33,7 @@ export default function SearchMovies({ onSubmit }) {
           // autofocus
           placeholder="Search movies"
         />
-        <button type="submit" className="SearchForm-button">
-          Search
-        </button>
+        <button type="submit" className={s.SearchFormButton}></button>
       </form>
     </header>
   );

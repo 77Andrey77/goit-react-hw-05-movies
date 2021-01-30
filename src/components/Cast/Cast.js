@@ -1,16 +1,45 @@
-// import { useState, useEffect } from "react";
-// import { useParams } from "react-router-dom";
-// import { Link } from "react-router-dom";
-// import * as moviesApi from "../services/moviesApi";
+import { useState, useEffect } from "react";
 
-// import { useEffect, useState } from "react";
+import { fetchMoviesCredits } from "../../services/moviesApi";
+import imagePlaseholder from "../../images/imagePlaceholder.png";
+import s from "../Cast/Cast.module.css";
 
 export default function Cast({ movieId }) {
-  // const [castList, setCastList] = useState(null);
+  const [cast, setCast] = useState(null);
 
-  // useEffect(() => {
-  //   moviesApi.fetchMoviesCredits(movieId).then((movie) => setCastList(movie));
-  // }, [movieId]);
+  useEffect(() => {
+    fetchMoviesCredits(movieId).then((data) => setCast(data.cast));
+  }, [movieId]);
 
-  return <>Cast</>;
+  return (
+    <>
+      {cast && (
+        <div className={s.wrapper}>
+          <ul className={s.list}>
+            {cast.map((actor) => {
+              return (
+                <li key={actor.id} className={s.item}>
+                  <img
+                    className={s.image}
+                    src={
+                      actor.profile_path
+                        ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+                        : imagePlaseholder
+                    }
+                    alt={actor.name}
+                  />
+                  <p>
+                    <b>{actor.name}</b>
+                  </p>
+                  <p>
+                    Character : <span>{actor.character}</span>
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </>
+  );
 }

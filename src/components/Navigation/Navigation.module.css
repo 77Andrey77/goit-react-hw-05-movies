@@ -1,12 +1,16 @@
 .link {
   display: inline-block;
   text-decoration: none;
-  padding: 12px;
+  padding: 30px;
   font-weight: 500;
   color: #2a363b;
-  font-size: 24px;
+  font-size: 30px;
 }
 
 .activeLink {
   color: #2528df;
+}
+
+nav {
+  background-color: rgb(235, 109, 109);
 }
