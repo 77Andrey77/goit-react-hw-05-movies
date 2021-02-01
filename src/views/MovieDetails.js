@@ -62,7 +62,7 @@ export default function MovieDetails() {
 
           <hr />
           <Suspense>
-            <Route path={`${path}:movieId/cast`}>
+            <Route path={`${path}/cast`}>
               {movie && <Cast movieId={movieId} />}
             </Route>
 

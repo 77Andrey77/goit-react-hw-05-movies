@@ -16,7 +16,7 @@ export function fetchTreading() {
 
 export function fetchSearchMovies(name) {
   return fetchWithErrorHandling(
-    `${BASE_URL}/search/movie/?api_key=${API_KEY}&query=${name}&language=en-US&page=1&include_adult=false`
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${name}&language=en-US&page=1&include_adult=false`
   );
 }
 
